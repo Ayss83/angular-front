@@ -5,41 +5,15 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form>
-        <p>
-          <mat-form-field appearance="outline">
-            <mat-label>Login</mat-label>
-            <input
-              type="text"
-              [(ngModel)]="userCredentials.email"
-              (ngModelChange)="loginError = false"
-              name="email"
-              matInput
-              required
-            />
-          </mat-form-field>
-        </p>
+      <app-auth-form (formChange)="onFormChange($event)"></app-auth-form>
 
-        <p>
-          <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
-            <input
-              type="password"
-              [(ngModel)]="userCredentials.password"
-              (ngModelChange)="loginError = false"
-              name="password"
-              matInput
-            />
-          </mat-form-field>
-        </p>
-      </form>
+      <div class="error-container">
+        <mat-error *ngIf="hasError">
+          Error while trying to log in, please try again
+        </mat-error>
+      </div>
     </mat-card-content>
 
-    <div class="error-container">
-      <mat-error *ngIf="loginError">
-        Error while trying to log in, please try again
-      </mat-error>
-    </div>
 
     <mat-card-actions>
       <a mat-button routerLink="/signup">Create an account</a>

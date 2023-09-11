@@ -1,1 +1,30 @@
-<p>signup works!</p>
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Account creation</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-auth-form [isSignUp]="true" (formChange)="onFormChange($event)"></app-auth-form>
+    </mat-card-content>
+
+    <div class="error-container">
+      <mat-error *ngIf="error">
+        {{ error }}
+      </mat-error>
+    </div>
+
+    <mat-card-actions>
+      <a mat-button routerLink="/">Return to log in</a>
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="formSubmit()"
+        [disabled]="isCreatingAccount"
+      >
+        Create account
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

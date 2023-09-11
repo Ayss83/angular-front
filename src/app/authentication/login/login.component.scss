@@ -1,5 +1,5 @@
 mat-card {
-  max-width: 400px;
+  width: 400px;
   display: flex;
   align-items: center;
 }
@@ -11,10 +11,6 @@ mat-card-title {
 mat-card-content {
   margin-top: 1em;
   width: 70%;
-
-  mat-form-field {
-    width: 100%;
-  }
 }
 
 .container {

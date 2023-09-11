@@ -1,0 +1,31 @@
+mat-card {
+  width: 400px;
+  display: flex;
+  align-items: center;
+}
+
+mat-card-title {
+  text-align: center;
+}
+
+mat-card-content {
+  margin-top: 1em;
+  width: 70%;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-container {
+  min-height: 1.6em;
+}
+
+a,
+button {
+  margin: 0 1em;
+  margin-bottom: 1em;
+}

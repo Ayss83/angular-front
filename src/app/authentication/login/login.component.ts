@@ -3,38 +3,38 @@ import {
   ChangeDetectorRef,
   Component,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
-import { UserCredentials } from 'src/app/models/user.models';
+import { User } from 'src/app/models/user.models';
 import { AuthService } from 'src/app/services/auth.service';
 import { take, tap } from 'rxjs';
 import { LoginResponse } from 'src/app/models/auth.models';
 import { CommonModule } from '@angular/common';
+import { AuthFormComponent } from '../auth-form/auth-form.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [
-    FormsModule,
     MatInputModule,
     MatCardModule,
     MatButtonModule,
     RouterModule,
     CommonModule,
+    AuthFormComponent,
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  userCredentials: UserCredentials = {
+  userCredentials: Partial<User> = {
     email: '',
     password: '',
   };
-  loginError = false;
+  hasError = false;
 
   constructor(
     private authService: AuthService,
@@ -42,6 +42,19 @@ export class LoginComponent {
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
+  /**
+   * Updates userCredentials with received information and resets error display
+   *
+   * @param user received user information
+   */
+  onFormChange(user: User) {
+    this.userCredentials = { ...user };
+    this.hasError = false;
+  }
+
+  /**
+   * Makes login request and navigates to home if successful or displays error message
+   */
   formSubmit() {
     this.authService
       .login(this.userCredentials)
@@ -52,8 +65,8 @@ export class LoginComponent {
             localStorage.setItem('token', response.token);
             this.router.navigate(['home']);
           } else {
-            this.loginError = true;
-            this.changeDetectorRef.markForCheck();
+            this.hasError = true;
+            this.changeDetectorRef.markForCheck(); // signaling internal change (related to OnPush strategy)
           }
         })
       )
