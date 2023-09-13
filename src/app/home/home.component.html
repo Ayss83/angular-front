@@ -1,1 +1,12 @@
-<p>home works!</p>
+<div class="menu" [ngStyle]="{ background: getLinearGradientColor() }">
+  <a
+    routerLink="/home"
+    mat-button
+    (click)="title = ''; menuColor = 'transparent'"
+    >Home</a
+  >
+  <h1>{{ title }}</h1>
+  <button type="button" mat-stroked-button (click)="logout()">Log out</button>
+</div>
+
+<router-outlet></router-outlet>
