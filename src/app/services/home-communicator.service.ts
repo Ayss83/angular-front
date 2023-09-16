@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SectionInfo } from '../models/home-communicator.models';
 
 /**
  * Service in charge of communication between child components and home component
@@ -8,11 +9,11 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class HomeCommunicatorService {
-  private changeColor = new Subject<string>();
+  private changeSection = new Subject<SectionInfo>();
 
-  changeColor$ = this.changeColor.asObservable();
+  changeSection$ = this.changeSection.asObservable();
 
-  onChangeColor(color: string) {
-    this.changeColor.next(color);
+  onSectionChange(sectionInfo: SectionInfo) {
+    this.changeSection.next(sectionInfo);
   }
 }

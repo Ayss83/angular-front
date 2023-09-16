@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
@@ -26,12 +31,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subscription = this.communicationService.changeColor$.subscribe(
-      (color) => {
-        this.menuColor = color;
+    this.subscription = this.communicationService.changeSection$.subscribe(
+      (sectionInfo) => {
+        this.menuColor = sectionInfo.color;
+        this.title = sectionInfo.name;
         this.changeDetectorRef.markForCheck();
       }
     );
+
+    if (this.router.url.includes('invoices')) {
+      this.title = 'Invoices';
+      this.menuColor = 'rgb(255, 255, 204)';
+    }
   }
 
   ngOnDestroy() {

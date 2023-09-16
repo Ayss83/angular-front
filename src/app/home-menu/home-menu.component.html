@@ -1,44 +1,44 @@
 <div class="container">
-    <a
-      (mouseenter)="sectionName = 'Quotations'"
-      (mouseleave)="sectionName = ''"
-      (click)="setColor('rgb(140, 204, 241)')"
-      class="petal petal1 mt-200"
-    >
-      <h2 class="petal-content">Quotations</h2>
-    </a>
-    <a
-      (mouseenter)="sectionName = 'Orders'"
-      (mouseleave)="sectionName = ''"
-      (click)="setColor('rgb(149, 241, 195)')"
-      class="petal petal2"
-    >
-      <h2 class="petal-content">Orders</h2>
-    </a>
-    <a
-      (mouseenter)="sectionName = 'Invoices'"
-      (mouseleave)="sectionName = ''"
-      (click)="setColor('rgb(255, 255, 204)')"
-      routerLink="invoices"
-      class="petal petal3"
-    >
-      <h2 class="petal-content">Invoices</h2>
-    </a>
-    <a
-      (mouseenter)="sectionName = 'Customers'"
-      (mouseleave)="sectionName = ''"
-      (click)="setColor('rgb(255, 227, 135)')"
-      class="petal petal4"
-    >
-      <h2 class="petal-content">Customers</h2>
-    </a>
-    <a
-      (mouseenter)="sectionName = 'Products'"
-      (mouseleave)="sectionName = ''"
-      (click)="setColor('rgb(247, 145, 145)')"
-      class="petal petal5 mt-200"
-    >
-      <h2 class="petal-content">Products</h2>
-    </a>
-    <h2 class="hovered-section">{{ sectionName }}</h2>
-  </div>
+  <a
+    (mouseenter)="sectionName = 'Quotations'"
+    (mouseleave)="sectionName = ''"
+    (click)="setSection({ name: 'Quotations', color: 'rgb(140, 204, 241)' })"
+    class="petal petal1 mt-200"
+  >
+    <h2 class="petal-content">Quotations</h2>
+  </a>
+  <a
+    (mouseenter)="sectionName = 'Orders'"
+    (mouseleave)="sectionName = ''"
+    (click)="setSection({ name: 'Orders', color: 'rgb(149, 241, 195)' })"
+    class="petal petal2"
+  >
+    <h2 class="petal-content">Orders</h2>
+  </a>
+  <a
+    (mouseenter)="sectionName = 'Invoices'"
+    (mouseleave)="sectionName = ''"
+    (click)="setSection({ name: 'Invoices', color: 'rgb(255, 255, 204)' })"
+    routerLink="invoices"
+    class="petal petal3"
+  >
+    <h2 class="petal-content">Invoices</h2>
+  </a>
+  <a
+    (mouseenter)="sectionName = 'Customers'"
+    (mouseleave)="sectionName = ''"
+    (click)="setSection({ name: 'Customers', color: 'rgb(255, 227, 135)' })"
+    class="petal petal4"
+  >
+    <h2 class="petal-content">Customers</h2>
+  </a>
+  <a
+    (mouseenter)="sectionName = 'Products'"
+    (mouseleave)="sectionName = ''"
+    (click)="setSection({ name: 'Products', color: 'rgb(247, 145, 145)' })"
+    class="petal petal5 mt-200"
+  >
+    <h2 class="petal-content">Products</h2>
+  </a>
+  <h2 class="hovered-section">{{ sectionName }}</h2>
+</div>
