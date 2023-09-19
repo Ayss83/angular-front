@@ -1,0 +1,71 @@
+<a mat-button routerLink="..">
+  <mat-icon fontIcon="arrow_back_ios"></mat-icon>
+  <span>Back to list</span>
+</a>
+<br />
+
+<h2>Product Creation</h2>
+
+<form>
+  <div class="first-line">
+    <mat-form-field appearance="outline">
+      <mat-label>Reference</mat-label>
+      <input
+        name="reference"
+        [(ngModel)]="product.reference"
+        type="text"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Product name</mat-label>
+      <input
+        name="name"
+        [(ngModel)]="product.name"
+        #name="ngModel"
+        type="text"
+        matInput
+        required
+      />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea
+      name="description"
+      [(ngModel)]="product.description"
+      matInput
+      cols="30"
+      rows="10"
+    ></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="price">
+    <mat-label>Price</mat-label>
+    <input
+      name="price"
+      [(ngModel)]="product.price"
+      #price="ngModel"
+      type="number"
+      matInput
+      required
+    />
+    <mat-icon
+      [style.color]="price.touched && price.invalid ? 'red' : 'black'"
+      matSuffix
+      >euro</mat-icon
+    >
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="save()"
+    [disabled]="name.invalid || price.invalid || (saving$ | async)"
+  >
+    Save
+  </button>
+</form>

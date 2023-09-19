@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvoiceListComponent } from './invoice-list.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('InvoiceListComponent', () => {
   let component: InvoiceListComponent;
@@ -8,7 +10,7 @@ describe('InvoiceListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [InvoiceListComponent]
+      imports: [InvoiceListComponent, RouterTestingModule, HttpClientTestingModule]
     });
     fixture = TestBed.createComponent(InvoiceListComponent);
     component = fixture.componentInstance;

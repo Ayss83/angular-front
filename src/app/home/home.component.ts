@@ -39,9 +39,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
 
+    // Manages title and color when reloading or accessing a view directly
+    this.setHeader();
+  }
+
+  /**
+   * Sets title and color of header according to current route
+   */
+  private setHeader() {
     if (this.router.url.includes('invoices')) {
       this.title = 'Invoices';
       this.menuColor = 'rgb(255, 255, 204)';
+    } else if (this.router.url.includes('customers')) {
+      this.title = 'Customers';
+      this.menuColor = 'rgb(255, 227, 135)';
+    } else if (this.router.url.includes('products')) {
+      this.title = 'Products';
+      this.menuColor = 'rgb(247, 145, 145)';
     }
   }
 

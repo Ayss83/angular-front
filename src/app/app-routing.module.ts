@@ -7,6 +7,10 @@ import { loggedGuard } from './guards/logged.guard';
 import { HomeMenuComponent } from './home-menu/home-menu.component';
 import { InvoiceListComponent } from './invoice/invoice-list/invoice-list.component';
 import { InvoiceEditComponent } from './invoice/invoice-edit/invoice-edit.component';
+import { CustomerListComponent } from './customer/customer-list/customer-list.component';
+import { CustomerEditComponent } from './customer/customer-edit/customer-edit.component';
+import { ProductListComponent } from './product/product-list/product-list.component';
+import { ProductEditComponent } from './product/product-edit/product-edit.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -19,10 +23,25 @@ const routes: Routes = [
       { path: '', component: HomeMenuComponent },
       {
         path: 'invoices',
-        component: InvoiceListComponent,
+        children: [
+          { path: '', component: InvoiceListComponent },
+          { path: 'edit', component: InvoiceEditComponent },
+        ],
       },
-      { path: 'invoices/new', component: InvoiceEditComponent },
-      { path: 'invoices/:id', component: InvoiceEditComponent },
+      {
+        path: 'customers',
+        children: [
+          { path: '', component: CustomerListComponent },
+          { path: 'edit', component: CustomerEditComponent },
+        ],
+      },
+      {
+        path: 'products',
+        children: [
+          { path: '', component: ProductListComponent },
+          { path: 'edit', component: ProductEditComponent },
+        ],
+      },
     ],
   },
 ];
