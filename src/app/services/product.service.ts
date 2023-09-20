@@ -16,4 +16,8 @@ export class ProductService {
   saveProduct(product: Product) {
     return this.http.post(`${baseUrl}/product`, product);
   }
+
+  deleteProduct(productId: string){
+    return this.http.delete(`${baseUrl}/product/${productId}`);
+  }
 }
