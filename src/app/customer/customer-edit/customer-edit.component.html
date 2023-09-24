@@ -1,1 +1,124 @@
-<p>customer-edit works!</p>
+<br />
+
+<h2>Customer {{ isEdition ? 'edition' : 'creation'}}</h2>
+
+<form>
+  <mat-form-field appearance="outline" *ngIf="isEdition">
+    <mat-label>Customer number</mat-label>
+    <input
+      name="num"
+      type="number"
+      [(ngModel)]="customer.num"
+      matInput
+      readonly
+    />
+  </mat-form-field>
+
+  <div class="multiple-input-line">
+    <mat-form-field appearance="outline">
+      <mat-label>Last name</mat-label>
+      <input
+        name="lastname"
+        type="text"
+        [(ngModel)]="customer.lastName"
+        matInput
+        required
+        #lastName="ngModel"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>First name</mat-label>
+      <input
+        name="firstname"
+        type="text"
+        [(ngModel)]="customer.firstName"
+        matInput
+        required
+        #firstName="ngModel"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="multiple-input-line">
+    <mat-form-field appearance="outline">
+      <mat-label>Email address</mat-label>
+      <input name="email" type="email" [(ngModel)]="customer.email" matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone number</mat-label>
+      <input name="phone" type="tel" [(ngModel)]="customer.phone" matInput />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Address line 1</mat-label>
+    <input
+      name="address1"
+      type="text"
+      [(ngModel)]="customer.address.address"
+      matInput
+      required
+      #address1="ngModel"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Address line 2</mat-label>
+    <input
+      name="address2"
+      type="text"
+      [(ngModel)]="customer.address.address2"
+      matInput
+    />
+  </mat-form-field>
+
+  <div class="multiple-input-line">
+    <mat-form-field appearance="outline">
+      <mat-label>Zip code</mat-label>
+      <input
+        name="zipcode"
+        type="text"
+        [(ngModel)]="customer.address.zipCode"
+        matInput
+        required
+        #zipCode="ngModel"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <input
+        name="city"
+        type="text"
+        [(ngModel)]="customer.address.city"
+        matInput
+        required
+        #city="ngModel"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="button-container">
+    <a mat-button routerLink="..">
+      <mat-icon fontIcon="arrow_back_ios"></mat-icon>
+      <span>Back to list</span>
+    </a>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="save()"
+      [disabled]="
+        lastName.invalid ||
+        firstName.invalid ||
+        address1.invalid ||
+        zipCode.invalid ||
+        city.invalid ||
+        (saving$ | async)
+      "
+    >
+      Save
+    </button>
+  </div>
+</form>

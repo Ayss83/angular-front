@@ -5,9 +5,9 @@
   height: 80%;
 
   .petal {
-    width: 150px;
-    height: 150px;
-    border: 2px solid black;
+    width: 9.375rem;
+    height: 9.375rem;
+    border: 0.125rem solid black;
     border-radius: 0 100%;
     position: relative;
     cursor: pointer;
@@ -16,7 +16,7 @@
   .petal1 {
     @extend .petal;
     transform: rotate(-45deg);
-    left: 105px;
+    left: 6.5625rem;
 
     &:hover {
       background-color: rgb(140, 204, 241);
@@ -25,7 +25,7 @@
 
   .petal2 {
     @extend .petal;
-    left: 30px;
+    left: 1.875rem;
 
     &:hover {
       background-color: rgb(149, 241, 195);
@@ -35,7 +35,7 @@
   .petal3 {
     @extend .petal;
     transform: rotate(45deg);
-    margin-top: -100px;
+    margin-top: -6.25rem;
 
     &:hover {
       background-color: rgb(255, 255, 204);
@@ -45,7 +45,7 @@
   .petal4 {
     @extend .petal;
     transform: rotate(90deg);
-    left: -30px;
+    left: -1.875rem;
 
     &:hover {
       background-color: rgb(255, 227, 135);
@@ -55,7 +55,7 @@
   .petal5 {
     @extend .petal;
     transform: rotate(135deg);
-    left: -105px;
+    left: -6.5625rem;
 
     &:hover {
       background-color: rgb(247, 145, 145);
@@ -63,7 +63,7 @@
   }
 
   .mt-200 {
-    margin-top: 200px;
+    margin-top: 12.5rem;
   }
 
   .petal-content {
@@ -72,7 +72,7 @@
 
   .hovered-section {
     position: absolute;
-    margin-top: 250px;
+    margin-top: 15.625rem;
   }
 }
 
@@ -89,10 +89,10 @@
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      margin: 3px 0;
+      margin: 0.1875rem 0;
       border: none;
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
+      border-top: 0.0625rem solid black;
+      border-bottom: 0.0625rem solid black;
       text-decoration: none;
 
       &visited {

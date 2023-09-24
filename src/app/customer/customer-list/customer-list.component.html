@@ -1,1 +1,49 @@
-<p>customer-list works!</p>
+<a routerLink="edit" mat-raised-button color="primary" class="new-button"
+  >New Customer</a
+>
+
+<table mat-table [dataSource]="customerList">
+  <ng-container matColumnDef="num">
+    <th mat-header-cell *matHeaderCellDef>Num</th>
+    <td mat-cell *matCellDef="let element">{{ element.num }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef>Last name</th>
+    <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef>First name</th>
+    <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="city">
+    <th mat-header-cell *matHeaderCellDef>City</th>
+    <td mat-cell *matCellDef="let element">{{ element.address.city }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-icon
+        (click)="editCustomer(element)"
+        fontIcon="edit"
+        matTooltip="Edit customer"
+      ></mat-icon>
+      <mat-icon
+        (click)="deleteCustomer(element._id)"
+        fontIcon="delete"
+        matTooltip="Delete customer"
+      ></mat-icon>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

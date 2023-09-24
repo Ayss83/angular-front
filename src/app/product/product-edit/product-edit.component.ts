@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +26,7 @@ import { SaveErrorSnackbarComponent } from 'src/app/shared/save-error-snackbar/s
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.scss'],
 })
-export class ProductEditComponent {
+export class ProductEditComponent implements OnInit {
   product: Product = { reference: '', name: '', description: '', price: null };
   saving$ = new Subject<boolean>();
 

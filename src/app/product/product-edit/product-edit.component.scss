@@ -25,6 +25,13 @@ mat-form-field {
 }
 
 .price {
-  width: 250px;
+  width: 15.625rem;
 }
 
+.button-container {
+  display: flex;
+
+  a {
+    margin-right: 2rem;
+  }
+}

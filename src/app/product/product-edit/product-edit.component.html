@@ -1,10 +1,6 @@
-<a mat-button routerLink="..">
-  <mat-icon fontIcon="arrow_back_ios"></mat-icon>
-  <span>Back to list</span>
-</a>
 <br />
 
-<h2>Product Creation</h2>
+<h2>Product creation</h2>
 
 <form>
   <div class="first-line">
@@ -59,13 +55,19 @@
     >
   </mat-form-field>
 
-  <button
-    mat-raised-button
-    color="primary"
-    type="button"
-    (click)="save()"
-    [disabled]="name.invalid || price.invalid || (saving$ | async)"
-  >
-    Save
-  </button>
+  <div class="button-container">
+    <a mat-button routerLink="..">
+      <mat-icon fontIcon="arrow_back_ios"></mat-icon>
+      <span>Back to list</span>
+    </a>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="save()"
+      [disabled]="name.invalid || price.invalid || (saving$ | async)"
+    >
+      Save
+    </button>
+  </div>
 </form>
