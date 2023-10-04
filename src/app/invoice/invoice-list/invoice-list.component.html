@@ -1,5 +1,7 @@
-<a routerLink="edit" mat-raised-button color="primary">New invoice</a>
-<table mat-table [dataSource]="invoiceList | async">
+<a routerLink="edit" class="new-button" mat-raised-button color="primary"
+  >New invoice</a
+>
+<table mat-table [dataSource]="invoiceList">
   <ng-container matColumnDef="num">
     <th mat-header-cell *matHeaderCellDef>No.</th>
     <td mat-cell *matCellDef="let element">{{ element.num }}</td>
@@ -8,26 +10,38 @@
   <ng-container matColumnDef="date">
     <th mat-header-cell *matHeaderCellDef>Date</th>
     <td mat-cell *matCellDef="let element">
-      {{ element.date | date:'mediumDate' }}
+      {{ element.date | date : "mediumDate" }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="customer">
     <th mat-header-cell *matHeaderCellDef>Customer</th>
-    <td mat-cell *matCellDef="let element">{{ element.num }}</td>
+    <td mat-cell *matCellDef="let element">
+      {{ element.customer.firstName + " " + element.customer.lastName }}
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="amount">
     <th mat-header-cell *matHeaderCellDef>Total</th>
-    <td mat-cell *matCellDef="let element">{{ element.num | currency:'EUR':'' }}€</td>
+    <td mat-cell *matCellDef="let element">
+      {{ computeTotal(element.products) | currency : "EUR" : "" }}€
+    </td>
   </ng-container>
 
-    <ng-container matColumnDef="actions">
+  <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-      <mat-icon fontIcon="search"></mat-icon>
-      <mat-icon fontIcon="edit"></mat-icon>
-      <mat-icon fontIcon="delete"></mat-icon>
+      <mat-icon fontIcon="search" matTooltip="Display invoice"></mat-icon>
+      <mat-icon
+        (click)="editInvoice(element)"
+        fontIcon="edit"
+        matTooltip="Edit Invoice"
+      ></mat-icon>
+      <mat-icon
+        (click)="deleteInvoice(element._id)"
+        fontIcon="delete"
+        matTooltip="Delete invoice"
+      ></mat-icon>
     </td>
   </ng-container>
 

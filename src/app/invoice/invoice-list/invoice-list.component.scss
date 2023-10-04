@@ -1,0 +1,12 @@
+mat-icon {
+  cursor: pointer;
+  margin-right: 5px;
+
+  &[fontIcon='delete'] {
+    color: red;
+  }
+}
+
+.new-button {
+  margin-left: 20px;
+}

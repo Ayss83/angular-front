@@ -1,0 +1,28 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <mat-select (selectionChange)="selectionChange.emit($event.value)">
+    <mat-option>
+      <ngx-mat-select-search
+        placeholderLabel="Search..."
+        noEntriesFoundLabel="No matching element found"
+        ngModel
+        (ngModelChange)="filterElements($event)"
+      ></ngx-mat-select-search>
+    </mat-option>
+    <mat-option *ngFor="let element of filteredElements" [value]="element">
+      <span *ngIf="isProduct(element)">
+        {{ element.reference || "No ref." }}
+        -
+        {{ element.name }}
+        -
+        {{ element.price | currency : "EUR" : "" }}€
+      </span>
+      
+      <span *ngIf="isCustomer(element)">
+        {{ element.num }}
+        -
+        {{ element.lastName + ' ' + element.firstName }}
+      </span>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

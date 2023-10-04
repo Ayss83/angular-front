@@ -1,3 +1,233 @@
-<a routerLink=".."
-  ><mat-icon fontIcon="arrow_back_ios"></mat-icon> <span>Back to list</span>
-</a>
+<br />
+
+<h2>Invoice {{ isEdition ? "edition" : "creation" }}</h2>
+
+<form>
+  <mat-form-field appearance="outline" *ngIf="isEdition">
+    <mat-label>Invoice number</mat-label>
+    <input name="num" type="text" [(ngModel)]="invoice.num" matInput readonly />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Date</mat-label>
+    <input
+      name="date"
+      [(ngModel)]="invoice.date"
+      [matDatepicker]="picker"
+      matInput
+      required
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <h3>Customer</h3>
+  <app-filterable-search
+    (selectionChange)="invoice.customer = $event; customerPanel.open()"
+    [elements]="customers"
+    [label]="'Find existing'"
+  ></app-filterable-search>
+  <span>or</span>
+  <button type="button" mat-button (click)="customerPanel.open()">
+    Create
+  </button>
+
+  <mat-accordion>
+    <mat-expansion-panel #customerPanel="matExpansionPanel">
+      <div>
+        <h3>Add new customer</h3>
+        <mat-form-field appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input
+            name="lastname"
+            type="text"
+            [(ngModel)]="invoice.customer.lastName"
+            matInput
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>First name</mat-label>
+          <input
+            name="firstname"
+            type="text"
+            [(ngModel)]="invoice.customer.firstName"
+            matInput
+            required
+          />
+        </mat-form-field>
+
+        <div class="multiple-input-line">
+          <mat-form-field appearance="outline">
+            <mat-label>Email address</mat-label>
+            <input
+              name="email"
+              type="email"
+              [(ngModel)]="invoice.customer.email"
+              matInput
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Phone number</mat-label>
+            <input
+              name="phone"
+              type="tel"
+              [(ngModel)]="invoice.customer.phone"
+              matInput
+            />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address line 1</mat-label>
+          <input
+            name="address1"
+            type="text"
+            [(ngModel)]="invoice.customer.address.address"
+            matInput
+            required
+            #address1="ngModel"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address line 2</mat-label>
+          <input
+            name="address2"
+            type="text"
+            [(ngModel)]="invoice.customer.address.address2"
+            matInput
+          />
+        </mat-form-field>
+
+        <div class="multiple-input-line">
+          <mat-form-field appearance="outline">
+            <mat-label>Zip code</mat-label>
+            <input
+              name="zipcode"
+              type="text"
+              [(ngModel)]="invoice.customer.address.zipCode"
+              matInput
+              required
+              #zipCode="ngModel"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input
+              name="city"
+              type="text"
+              [(ngModel)]="invoice.customer.address.city"
+              matInput
+              required
+              #city="ngModel"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <h3>Products</h3>
+  <div *ngFor="let quantityProduct of invoice.products; let i = index">
+    <mat-form-field appearance="outline">
+      <mat-label>Reference</mat-label>
+      <input
+        type="text"
+        [name]="'reference_' + i"
+        matInput
+        [(ngModel)]="quantityProduct.product.reference"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        [name]="'name_' + i"
+        matInput
+        [(ngModel)]="quantityProduct.product.name"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Quantity</mat-label>
+      <input
+        type="number"
+        [name]="'quantity_' + i"
+        matInput
+        [(ngModel)]="quantityProduct.quantity"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Unit price (VAT included)</mat-label>
+      <input
+        type="number"
+        [name]="'price_' + i"
+        matInput
+        [(ngModel)]="quantityProduct.product.price"
+      />
+    </mat-form-field>
+
+    <button type="button" mat-button (click)="removeProduct(quantityProduct)">
+      <mat-icon fontIcon="delete"></mat-icon>
+    </button>
+  </div>
+
+  <button type="button" mat-button (click)="selectProduct()">
+    Add an existing product
+  </button>
+
+  <button type="button" mat-button (click)="addProduct()">
+    Add a new product
+  </button>
+</form>
+
+<div class="button-container">
+  <a mat-button routerLink="..">
+    <mat-icon fontIcon="arrow_back_ios"></mat-icon>
+    <span>Back to list</span>
+  </a>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="save()"
+    [disabled]="!isValidInvoice || (saving$ | async)"
+  >
+    Save
+  </button>
+</div>
+
+<ng-template #selectProductTemplate>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Choose existing product</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-filterable-search
+        (selectionChange)="productToAdd = $event"
+        [elements]="filterNotAlreadyAddedProducts()"
+        [label]="'Products'"
+      ></app-filterable-search>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button type="button" mat-dialog-close mat-button>Cancel</button>
+      <button
+        type="button"
+        (click)="addExistingProduct()"
+        mat-dialog-close
+        mat-raised-button
+        color="primary"
+      >
+        Add
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>
