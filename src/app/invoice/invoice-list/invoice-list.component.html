@@ -50,4 +50,6 @@
 </table>
 
 
-<iframe *ngIf="test" [src]="test" width="100%" height="500px"></iframe>
+<ng-template #displayDialog>
+  <iframe [src]="invoicePdf" width="100%" height="100%"></iframe>
+</ng-template>
