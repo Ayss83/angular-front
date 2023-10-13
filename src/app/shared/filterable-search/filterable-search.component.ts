@@ -23,6 +23,7 @@ export class FilterableSearchComponent<T> {
   @Input() label: string = '';
   @Output() selectionChange = new EventEmitter<T>();
   filteredElements: T[] = [];
+  selection: T | null = null;
 
   ngOnChanges() {
     this.filteredElements = this.elements.slice();
@@ -86,5 +87,12 @@ export class FilterableSearchComponent<T> {
     }
 
     return stringElement;
+  }
+
+  /**
+   * Clears current selection
+   */
+  clear() {
+    this.selection = null;
   }
 }

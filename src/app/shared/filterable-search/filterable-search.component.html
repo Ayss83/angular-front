@@ -1,6 +1,9 @@
 <mat-form-field appearance="outline">
   <mat-label>{{ label }}</mat-label>
-  <mat-select (selectionChange)="selectionChange.emit($event.value)">
+  <mat-select
+    (selectionChange)="selectionChange.emit($event.value)"
+    [(ngModel)]="selection"
+  >
     <mat-option>
       <ngx-mat-select-search
         placeholderLabel="Search..."
@@ -17,11 +20,11 @@
         -
         {{ element.price | currency : "EUR" : "" }}€
       </span>
-      
+
       <span *ngIf="isCustomer(element)">
         {{ element.num }}
         -
-        {{ element.lastName + ' ' + element.firstName }}
+        {{ element.lastName + " " + element.firstName }}
       </span>
     </mat-option>
   </mat-select>

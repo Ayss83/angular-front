@@ -27,6 +27,15 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SaveErrorSnackbarComponent } from 'src/app/shared/save-error-snackbar/save-error-snackbar.component';
 import { Subject } from 'rxjs';
 
+const emptyCustomer: Customer = {
+  firstName: '',
+  lastName: '',
+  address: { address: '', address2: '', zipCode: '', city: '' },
+  email: '',
+  num: null,
+  phone: '',
+};
+
 @Component({
   selector: 'app-invoice-edit',
   standalone: true,
@@ -55,14 +64,7 @@ export class InvoiceEditComponent implements OnInit {
     num: '',
     date: new Date(),
     vatRate: 20,
-    customer: {
-      firstName: '',
-      lastName: '',
-      address: { address: '', address2: '', zipCode: '', city: '' },
-      email: '',
-      num: null,
-      phone: '',
-    },
+    customer: { ...emptyCustomer, address: { ...emptyCustomer.address } },
     products: [],
   };
   products: Product[] = [];
@@ -88,6 +90,13 @@ export class InvoiceEditComponent implements OnInit {
         (acc, element) => acc + element.quantity,
         0
       ) > 0
+    );
+  }
+
+  get invoiceTotal() {
+    return this.invoice.products.reduce(
+      (acc, element) => acc + element.quantity * (element.product.price || 0),
+      0
     );
   }
 
@@ -160,7 +169,7 @@ export class InvoiceEditComponent implements OnInit {
 
   save() {
     this.saving$.next(true);
-    this.invoiceService.saveInvoice(this.invoice).subscribe({
+    this.invoiceService.saveInvoice(this.cleanInvoice()).subscribe({
       next: () => {
         this.router.navigate(['../'], { relativeTo: this.route });
         this.saving$.next(false);
@@ -173,5 +182,27 @@ export class InvoiceEditComponent implements OnInit {
         this.saving$.next(false);
       },
     });
+  }
+
+  /**
+   * Gets invoice without incomplete products (without name or quantity)
+   *
+   * @returns Invoice cleaned from incomplete products
+   */
+  private cleanInvoice(): Invoice {
+    return {
+      ...this.invoice,
+      products: this.invoice.products.filter(
+        (quantityProduct) =>
+          !!quantityProduct.quantity && !!quantityProduct.product.name
+      ),
+    };
+  }
+
+  useNewCustomer() {
+    this.invoice.customer = {
+      ...emptyCustomer,
+      address: { ...emptyCustomer.address },
+    };
   }
 }

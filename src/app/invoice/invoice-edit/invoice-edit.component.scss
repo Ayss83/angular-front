@@ -1,0 +1,74 @@
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.mw-700 {
+  max-width: 700px;
+}
+
+.mw-1000 {
+  max-width: 1000px;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.customer-container {
+  display: inline-flex;
+  align-items: baseline;
+
+  app-filterable-search {
+    flex-grow: 3;
+  }
+}
+
+.multiple-input-line {
+  display: flex;
+  justify-content: space-between;
+
+  mat-form-field {
+    width: 48%;
+  }
+}
+
+.full-line-input {
+  width: 100%;
+}
+
+.product-line {
+  width: 70vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+
+  a, button:not(:last-of-type) {
+    margin-right: 2rem;
+  }
+}
+
+.total {
+  font-size: 1.5rem;
+}
+
+.product-select-card {
+  display: flex;
+  justify-content: center;
+  width: 500px;
+}

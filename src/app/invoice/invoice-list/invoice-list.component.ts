@@ -117,7 +117,7 @@ export class InvoiceListComponent implements OnInit {
 
     doc.setFontSize(10);
     doc.text(
-      'Company SIRET number: xxxxxxxxxxxxxxxxx, phone: xxxxxxxxxx, email: xxxxxx@xxxxxxx.xx',
+      'Company registration number: xxxxxxxxxxxxxxxxx, phone: xxxxxxxxxx, email: xxxxxx@xxxxxxx.xx',
       105,
       283,
       { align: 'center' }
@@ -133,7 +133,6 @@ export class InvoiceListComponent implements OnInit {
       height: '800px',
       maxHeight: '90vh',
     });
-    // TODO generate pdf, open matdialog with iframe using pdf resourceurl as source
   }
 
   /**
