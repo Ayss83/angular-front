@@ -10,6 +10,7 @@ import { Router, RouterModule } from '@angular/router';
 import { HomeCommunicatorService } from '../services/home-communicator.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { TokenService } from '../services/token.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private communicationService: HomeCommunicatorService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit() {
@@ -64,7 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.tokenService.removeToken();
     this.router.navigate(['/']);
   }
 

@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatNativeDateModule } from '@angular/material/core';
+import { LogoutInterceptor } from './interceptors/logout.interceptor';
+import { RenewTokenInterceptor } from './interceptors/renew-token.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +23,16 @@ import { MatNativeDateModule } from '@angular/material/core';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LogoutInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RenewTokenInterceptor,
       multi: true,
     },
   ],

@@ -13,6 +13,7 @@ import { take, tap } from 'rxjs';
 import { LoginResponse } from 'src/app/models/auth.models';
 import { CommonModule } from '@angular/common';
 import { AuthFormComponent } from '../auth-form/auth-form.component';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private tokenService: TokenService
   ) {}
 
   /**
@@ -62,7 +64,7 @@ export class LoginComponent {
         take(1),
         tap((response: LoginResponse | null) => {
           if (response) {
-            localStorage.setItem('token', response.token);
+            this.tokenService.setToken(response.token);
             this.router.navigate(['home']);
           } else {
             this.hasError = true;

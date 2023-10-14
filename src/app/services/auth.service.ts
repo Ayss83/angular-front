@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { baseUrl } from '../constants';
+import {
+  HttpClient,
+  HttpContext,
+  HttpContextToken,
+} from '@angular/common/http';
+import { DISABLE_INTERCEPTION, baseUrl } from '../constants';
 import { User } from '../models/user.models';
 import { LoginResponse, SignupResponse } from '../models/auth.models';
 
@@ -22,5 +26,11 @@ export class AuthService {
       `${baseUrl}/auth/login`,
       userCredentials
     );
+  }
+
+  renewToken() {
+    return this.http.get<LoginResponse>(`${baseUrl}/auth/token`, {
+      context: new HttpContext().set(DISABLE_INTERCEPTION, true),
+    });
   }
 }
