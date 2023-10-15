@@ -13,7 +13,7 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { Invoice } from 'src/app/models/invoice.models';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { Product, QuantityProduct } from 'src/app/models/product.models';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -59,6 +59,7 @@ const emptyCustomer: Customer = {
 })
 export class InvoiceEditComponent implements OnInit {
   @ViewChild('selectProductTemplate') selectProductTemplate!: TemplateRef<any>;
+  @ViewChild('customerPanel') customerInfoPanel!: MatExpansionPanel;
 
   invoice: Invoice = {
     num: '',
@@ -125,6 +126,12 @@ export class InvoiceEditComponent implements OnInit {
     this.customerService.getUserCustomers().subscribe((customers) => {
       this.customers = customers;
     });
+  }
+
+  ngAfterViewInit() {
+    if (!!this.invoice.customer.lastName) {
+      this.customerInfoPanel.open();
+    }
   }
 
   addProduct(product?: Product) {

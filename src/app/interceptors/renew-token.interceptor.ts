@@ -21,6 +21,7 @@ export class RenewTokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    // Use of context DISABLE_INTERCEPTION property not to intercept the renewToken request
     if (this.tokenService.isTokenRenewalNeeded() && !request.context.get(DISABLE_INTERCEPTION)) {
       this.refreshToken();
     }
