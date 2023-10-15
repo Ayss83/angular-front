@@ -8,7 +8,6 @@ form {
 .multiple-input-line {
   display: flex;
   justify-content: space-between;
-  width: 40%;
 
   mat-form-field {
     width: 48%;
@@ -17,6 +16,13 @@ form {
 
 mat-form-field {
   display: block;
-  width: 40%;
+}
 
+.w-40 {
+  width: 40%;
+}
+
+.info {
+  margin-top: 2rem;
+  text-align: center;
 }

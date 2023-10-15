@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpContext,
-  HttpContextToken,
 } from '@angular/common/http';
 import { DISABLE_INTERCEPTION, baseUrl } from '../constants';
 import { User } from '../models/user.models';
@@ -17,14 +16,20 @@ export class AuthService {
   signup(user: User) {
     return this.http.post<SignupResponse | { error: string }>(
       `${baseUrl}/auth/signup`,
-      user
+      user,
+      {
+        context: new HttpContext().set(DISABLE_INTERCEPTION, true),
+      }
     );
   }
 
   login(userCredentials: Partial<User>) {
     return this.http.post<LoginResponse | null>(
       `${baseUrl}/auth/login`,
-      userCredentials
+      userCredentials,
+      {
+        context: new HttpContext().set(DISABLE_INTERCEPTION, true),
+      }
     );
   }
 

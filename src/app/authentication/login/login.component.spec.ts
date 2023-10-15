@@ -18,7 +18,13 @@ describe('LoginComponent', () => {
       imports: [
         LoginComponent,
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([{path: 'home', component: LoginComponent}]),
+        RouterTestingModule.withRoutes([
+          {
+            path: 'home',
+            component: LoginComponent,
+            children: [{ path: 'company', component: LoginComponent }],
+          },
+        ]),
         NoopAnimationsModule,
       ],
       providers: [AuthService],
@@ -80,7 +86,10 @@ describe('LoginComponent', () => {
 
       component.formSubmit();
 
-      expect(window.localStorage.setItem).toHaveBeenCalledWith('token', 'testToken');
+      expect(window.localStorage.setItem).toHaveBeenCalledWith(
+        'token',
+        'testToken'
+      );
     });
   });
 });

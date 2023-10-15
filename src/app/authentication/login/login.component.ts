@@ -9,11 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { User } from 'src/app/models/user.models';
 import { AuthService } from 'src/app/services/auth.service';
-import { take, tap } from 'rxjs';
+import { of, switchMap, take, tap } from 'rxjs';
 import { LoginResponse } from 'src/app/models/auth.models';
 import { CommonModule } from '@angular/common';
 import { AuthFormComponent } from '../auth-form/auth-form.component';
 import { TokenService } from 'src/app/services/token.service';
+import { CompanyService } from 'src/app/services/company.service';
+import { Company } from 'src/app/models/company.models';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +43,8 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private companyService: CompanyService
   ) {}
 
   /**
@@ -62,16 +65,40 @@ export class LoginComponent {
       .login(this.userCredentials)
       .pipe(
         take(1),
-        tap((response: LoginResponse | null) => {
+        switchMap((response: LoginResponse | null) => {
           if (response) {
             this.tokenService.setToken(response.token);
-            this.router.navigate(['home']);
+            return this.companyService.getCompany();
           } else {
             this.hasError = true;
             this.changeDetectorRef.markForCheck(); // signaling internal change (related to OnPush strategy)
+            return of(null);
+          }
+        }),
+        tap((company) => {
+          if (this.isCompanyInformationComplete(company)) {
+            this.router.navigate(['home']);
+          } else {
+            this.router.navigate(['home', 'company']);
           }
         })
       )
       .subscribe();
+  }
+
+  /**
+   * Checks if all base necessary information for invoice has been defined
+   * 
+   * @param company company information to check
+   * @returns boolean to indicate if all base information is present
+   */
+  isCompanyInformationComplete(company: Company | null) {
+    return !!(
+      company &&
+      company.name &&
+      company.address &&
+      company.zipCode &&
+      company.city
+    );
   }
 }
