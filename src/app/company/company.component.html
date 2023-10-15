@@ -1,51 +1,74 @@
-<br>
+<br />
 
 <form>
   <mat-form-field appearance="outline">
     <mat-label>Registration number</mat-label>
-    <input type="text" matInput />
+    <input
+      type="text"
+      matInput
+      [(ngModel)]="company.registrationNumber"
+      name="registrationNumber"
+    />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Company name</mat-label>
-    <input type="text" matInput />
+    <input type="text" matInput [(ngModel)]="company.name" name="name" />
   </mat-form-field>
 
   <div class="multiple-input-line">
     <mat-form-field appearance="outline">
       <mat-label>Email address</mat-label>
-      <input type="email" matInput />
+      <input type="email" matInput [(ngModel)]="company.email" name="email" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Phone number</mat-label>
-      <input type="tel" matInput />
+      <input type="tel" matInput [(ngModel)]="company.phone" name="phone" />
     </mat-form-field>
   </div>
 
   <mat-form-field appearance="outline">
     <mat-label>Address line 1</mat-label>
-    <input type="text" matInput />
+    <input type="text" matInput [(ngModel)]="company.address" name="address" />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Address line 2</mat-label>
-    <input type="text" matInput />
+    <input
+      type="text"
+      matInput
+      [(ngModel)]="company.address2"
+      name="address2"
+    />
   </mat-form-field>
 
   <div class="multiple-input-line">
     <mat-form-field appearance="outline">
       <mat-label>Zip code</mat-label>
-      <input type="text" matInput />
+      <input
+        type="text"
+        matInput
+        [(ngModel)]="company.zipCode"
+        name="zipCode"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>City</mat-label>
-      <input type="text" matInput />
+      <input type="text" matInput [(ngModel)]="company.city" name="city" />
     </mat-form-field>
   </div>
 
   <div class="button-container">
-    <button type="button" mat-raised-button color="primary">Save</button>
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="saving$ | async"
+    >
+      Save
+    </button>
   </div>
 </form>

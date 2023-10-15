@@ -18,6 +18,11 @@ import { jsPDF } from 'jspdf';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Customer } from 'src/app/models/customer.models';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CompanyService } from 'src/app/services/company.service';
+import { catchError, of, tap } from 'rxjs';
+import { Company } from 'src/app/models/company.models';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { RetrieveErrorSnackbarComponent } from 'src/app/shared/retrieve-error-snackbar/retrieve-error-snackbar.component';
 
 @Component({
   selector: 'app-invoice-list',
@@ -30,6 +35,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
   templateUrl: './invoice-list.component.html',
   styleUrls: ['./invoice-list.component.scss'],
@@ -46,7 +52,9 @@ export class InvoiceListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private companyService: CompanyService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -80,16 +88,78 @@ export class InvoiceListComponent implements OnInit {
   }
 
   displayInvoice(invoice: Invoice) {
-    const doc = new jsPDF();
-    doc.setFontSize(12);
+    this.companyService
+      .getCompany()
+      .pipe(
+        tap((company) => {
+          const doc = new jsPDF();
+          doc.setFontSize(12);
 
-    // company
+          this.setCompanyInfo(doc, company);
+
+          this.setCustomerInfo(doc, invoice.customer);
+
+          this.setTitleAndDate(doc, invoice);
+
+          this.setProductContainer(doc);
+          this.setProducts(invoice.products, doc);
+
+          this.setSumUpContainer(doc);
+          this.setSumUpInformation(doc, invoice.products);
+
+          this.setCompanyAdditionalInfo(company, doc);
+
+          this.invoicePdf = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            doc.output('datauristring')
+          );
+
+          this.dialog.open(this.displayDialog, {
+            width: '1200px',
+            maxWidth: '100vw',
+            height: '800px',
+            maxHeight: '90vh',
+          });
+        }),
+        catchError(() => {
+          this.snackBar.openFromComponent(RetrieveErrorSnackbarComponent, {
+            horizontalPosition: 'end',
+            duration: 4000,
+          });
+          return of();
+        })
+      )
+      .subscribe();
+  }
+
+  /**
+   * Sets date and "title" of invoice in pdf
+   *
+   * @param doc jsPDF document
+   * @param invoice invoice to display
+   */
+  private setTitleAndDate(doc: jsPDF, invoice: Invoice) {
+    doc.text('Date: ' + new Date(invoice.date).toLocaleDateString(), 35, 65, {
+      align: 'center',
+    });
+
+    doc.setFontSize(20);
+    doc.text('Invoice #' + invoice.num, 105, 75, { align: 'center' });
+    doc.setFontSize(12);
+  }
+
+  /**
+   * Sets company information in invoice header
+   *
+   * @param doc jsPDF document
+   * @param company company information
+   */
+  private setCompanyInfo(doc: jsPDF, company: Company) {
     doc.text(
       [
-        'Company name',
-        'Company address 1',
-        'Company address 2',
-        'Company zipcode and city',
+        company.name,
+        company.address,
+        company.address2,
+        company.zipCode + ' ' + company.city,
       ].filter((element) => element.trim().length > 0),
       35,
       12,
@@ -98,41 +168,6 @@ export class InvoiceListComponent implements OnInit {
         lineHeightFactor: 1.35,
       }
     );
-
-    this.setCustomerInfo(doc, invoice.customer);
-
-    doc.text('Date: ' + new Date(invoice.date).toLocaleDateString(), 35, 65, {
-      align: 'center',
-    });
-
-    doc.setFontSize(20);
-    doc.text('Invoice #' + invoice.num, 105, 75, { align: 'center' });
-    doc.setFontSize(12);
-
-    this.setProductContainer(doc);
-    this.setProducts(invoice.products, doc);
-
-    this.setSumUpContainer(doc);
-    this.setSumUpInformation(doc, invoice.products);
-
-    doc.setFontSize(10);
-    doc.text(
-      'Company registration number: xxxxxxxxxxxxxxxxx, phone: xxxxxxxxxx, email: xxxxxx@xxxxxxx.xx',
-      105,
-      283,
-      { align: 'center' }
-    );
-
-    this.invoicePdf = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      doc.output('datauristring')
-    );
-
-    this.dialog.open(this.displayDialog, {
-      width: '1200px',
-      maxWidth: '100vw',
-      height: '800px',
-      maxHeight: '90vh',
-    });
   }
 
   /**
@@ -270,5 +305,24 @@ export class InvoiceListComponent implements OnInit {
       { align: 'right' }
     );
     doc.setFont('', 'normal');
+  }
+
+  /**
+   * Builds and sets company additional information depending on existing information in invoice footer
+   *
+   * @param company company information
+   * @param doc jsPDF document
+   */
+  private setCompanyAdditionalInfo(company: Company, doc: jsPDF) {
+    const companyAdditionalInfo = [
+      company.registrationNumber
+        ? 'Company registration number: ' + company.registrationNumber
+        : '',
+      company.email ? 'email: ' + company.email : '',
+      company.phone ? 'phone: ' + company.phone : '',
+    ].filter(element => !!element).join(' - ');
+
+    doc.setFontSize(10);
+    doc.text(companyAdditionalInfo, 105, 283, { align: 'center' });
   }
 }
