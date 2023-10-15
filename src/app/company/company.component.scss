@@ -1,0 +1,22 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.multiple-input-line {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+
+  mat-form-field {
+    width: 48%;
+  }
+}
+
+mat-form-field {
+  display: block;
+  width: 40%;
+
+}

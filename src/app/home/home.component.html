@@ -1,13 +1,23 @@
 <div class="menu" [ngStyle]="{ background: getLinearGradientColor() }">
-  <a
-    routerLink="/home"
-    mat-button
-    (click)="title = ''; menuColor = 'transparent'"
-  >
-    Home
-  </a>
+  <div class="side-container">
+    <a
+      routerLink="/home"
+      mat-button
+      (click)="title = ''; menuColor = 'transparent'"
+    >
+      Home
+    </a>
+  </div>
   <h1>{{ title }}</h1>
-  <button type="button" mat-stroked-button (click)="logout()">Log out</button>
+  <div class="side-container">
+    <a
+      routerLink="./company"
+      mat-button
+      (click)="title = 'Company'; menuColor = 'rgb(230, 230, 230)'"
+      >Company information</a
+    >
+    <button type="button" mat-stroked-button (click)="logout()">Log out</button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

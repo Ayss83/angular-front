@@ -11,6 +11,7 @@ import { CustomerListComponent } from './customer/customer-list/customer-list.co
 import { CustomerEditComponent } from './customer/customer-edit/customer-edit.component';
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
+import { CompanyComponent } from './company/company.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -42,6 +43,7 @@ const routes: Routes = [
           { path: 'edit', component: ProductEditComponent },
         ],
       },
+      { path: 'company', component: CompanyComponent },
     ],
   },
 ];

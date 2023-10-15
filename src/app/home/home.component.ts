@@ -58,6 +58,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else if (this.router.url.includes('products')) {
       this.title = 'Products';
       this.menuColor = 'rgb(247, 145, 145)';
+    } else if (this.router.url.includes('company')) {
+      this.title = 'Company';
+      this.menuColor = 'rgb(230, 230, 230)';
     }
   }
 
