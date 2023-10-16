@@ -1,9 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  flush,
+} from '@angular/core/testing';
 
 import { CustomerListComponent } from './customer-list.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Customer } from 'src/app/models/customer.models';
+import { of, throwError } from 'rxjs';
+import { RetrieveErrorSnackbarComponent } from 'src/app/shared/retrieve-error-snackbar/retrieve-error-snackbar.component';
+import { DeleteErrorSnackbarComponent } from 'src/app/shared/delete-error-snackbar/delete-error-snackbar.component';
 
 describe('CustomerListComponent', () => {
   let component: CustomerListComponent;
@@ -25,5 +34,89 @@ describe('CustomerListComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('getCustomers', () => {
+    it('should assign response to customerList.data', fakeAsync(() => {
+      const mockResult = [{} as Customer, {} as Customer];
+      spyOn(component['customerService'], 'getUserCustomers').and.returnValue(
+        of(mockResult)
+      );
+
+      component.getCustomers();
+      flush();
+
+      expect(component.customerList.data).toBe(mockResult);
+    }));
+
+    it('should display snackBar message', fakeAsync(() => {
+      spyOn(component['customerService'], 'getUserCustomers').and.returnValue(
+        throwError(() => new Error('test'))
+      );
+      const spy = spyOn(component['snackBar'], 'openFromComponent');
+
+      component.getCustomers();
+      flush();
+
+      expect(spy).toHaveBeenCalledWith(RetrieveErrorSnackbarComponent, {
+        horizontalPosition: 'end',
+        duration: 4000,
+      });
+    }));
+  });
+
+  describe('editCustomer', () => {
+    it('should navigate to edit view', () => {
+      const spy = spyOn(component['router'], 'navigate');
+      const mockCustomer = { lastName: 'test' } as Customer;
+
+      component.editCustomer(mockCustomer);
+
+      expect(spy).toHaveBeenCalledWith(['edit'], {
+        relativeTo: component['route'],
+        state: { customer: mockCustomer },
+      });
+    });
+  });
+
+  describe('deleteCustomer', () => {
+    it('should request customer deletion', () => {
+      const spy = spyOn(
+        component['customerService'],
+        'deleteCustomer'
+      ).and.returnValue(of());
+      const id = 'test';
+
+      component.deleteCustomer(id);
+
+      expect(spy).toHaveBeenCalledWith(id);
+    });
+
+    it('should renew customers list', fakeAsync(() => {
+      spyOn(component['customerService'], 'deleteCustomer').and.returnValue(
+        of({})
+      );
+      const spy = spyOn(component, 'getCustomers');
+
+      component.deleteCustomer('test');
+      flush();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should display snackBar message on error', fakeAsync(() => {
+      spyOn(component['customerService'], 'deleteCustomer').and.returnValue(
+        throwError(() => new Error('test'))
+      );
+      const spy = spyOn(component['snackBar'], 'openFromComponent');
+
+      component.deleteCustomer('test');
+      flush();
+
+      expect(spy).toHaveBeenCalledWith(DeleteErrorSnackbarComponent, {
+        horizontalPosition: 'end',
+        duration: 4000,
+      });
+    }));
   });
 });

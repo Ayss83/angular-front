@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from 'src/app/services/auth.service';
 import { of } from 'rxjs';
+import { Company } from 'src/app/models/company.models';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -90,6 +91,34 @@ describe('LoginComponent', () => {
         'token',
         'testToken'
       );
+    });
+  });
+
+  describe('isCompanyInformationComplete', () => {
+    it('should return false (no company object)', () => {
+      expect(component.isCompanyInformationComplete(null)).toBeFalse();
+    });
+
+    it('should return false (incomplete)', () => {
+      expect(
+        component.isCompanyInformationComplete({
+          name: 'test',
+          address: 'test address',
+          zipCode: '',
+          city: 'test city',
+        } as Company)
+      ).toBeFalse();
+    });
+
+    it('should return true', () => {
+      expect(
+        component.isCompanyInformationComplete({
+          name: 'test',
+          address: 'test address',
+          zipCode: 'test zip code',
+          city: 'test city',
+        } as Company)
+      ).toBeTrue();
     });
   });
 });

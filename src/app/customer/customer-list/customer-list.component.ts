@@ -7,6 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { CustomerService } from 'src/app/services/customer.service';
 import { Customer } from 'src/app/models/customer.models';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { RetrieveErrorSnackbarComponent } from 'src/app/shared/retrieve-error-snackbar/retrieve-error-snackbar.component';
+import { DeleteErrorSnackbarComponent } from 'src/app/shared/delete-error-snackbar/delete-error-snackbar.component';
 
 @Component({
   selector: 'app-customer-list',
@@ -17,7 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     RouterModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule,
   ],
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
@@ -36,7 +40,8 @@ export class CustomerListComponent {
   constructor(
     private customerService: CustomerService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -44,8 +49,16 @@ export class CustomerListComponent {
   }
 
   getCustomers() {
-    this.customerService.getUserCustomers().subscribe((customers) => {
-      this.customerList.data = customers;
+    this.customerService.getUserCustomers().subscribe({
+      next: (customers) => {
+        this.customerList.data = customers;
+      },
+      error: () => {
+        this.snackBar.openFromComponent(RetrieveErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 
@@ -57,8 +70,16 @@ export class CustomerListComponent {
   }
 
   deleteCustomer(customerId: string) {
-    this.customerService.deleteCustomer(customerId).subscribe(() => {
-      this.getCustomers();
+    this.customerService.deleteCustomer(customerId).subscribe({
+      next: () => {
+        this.getCustomers();
+      },
+      error: () => {
+        this.snackBar.openFromComponent(DeleteErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 }

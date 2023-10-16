@@ -1,9 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 
 import { CustomerEditComponent } from './customer-edit.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Customer } from 'src/app/models/customer.models';
+import { of } from 'rxjs';
 
 describe('CustomerEditComponent', () => {
   let component: CustomerEditComponent;
@@ -15,7 +17,7 @@ describe('CustomerEditComponent', () => {
         CustomerEditComponent,
         HttpClientTestingModule,
         RouterTestingModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
     });
     fixture = TestBed.createComponent(CustomerEditComponent);
@@ -25,5 +27,30 @@ describe('CustomerEditComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    it('should assign received customer to customer property', () => {
+      const mockCustomer = { lastName: 'test' } as Customer;
+      spyOn(component['location'], 'getState').and.returnValue({
+        customer: mockCustomer,
+      });
+
+      component.ngOnInit();
+
+      expect(component.customer).toBe(mockCustomer);
+    });
+  });
+
+  describe('save', () => {
+    it('should emit with saving$ subject', fakeAsync(() => {
+      const spy = spyOn(component.saving$, 'next');
+      spyOn(component['customerService'], 'save').and.returnValue(of({}));
+
+      component.save();
+      flush();
+
+      expect(spy).toHaveBeenCalledTimes(2);
+    }));
   });
 });
