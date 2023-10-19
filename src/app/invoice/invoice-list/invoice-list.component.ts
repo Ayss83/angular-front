@@ -23,6 +23,7 @@ import { catchError, of, tap } from 'rxjs';
 import { Company } from 'src/app/models/company.models';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RetrieveErrorSnackbarComponent } from 'src/app/shared/retrieve-error-snackbar/retrieve-error-snackbar.component';
+import { DeleteErrorSnackbarComponent } from 'src/app/shared/delete-error-snackbar/delete-error-snackbar.component';
 
 @Component({
   selector: 'app-invoice-list',
@@ -62,8 +63,16 @@ export class InvoiceListComponent implements OnInit {
   }
 
   getInvoices() {
-    this.invoiceService.getUserInvoices().subscribe((invoices) => {
-      this.invoiceList.data = invoices;
+    this.invoiceService.getUserInvoices().subscribe({
+      next: (invoices) => {
+        this.invoiceList.data = invoices;
+      },
+      error: () => {
+        this.snackBar.openFromComponent(RetrieveErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 
@@ -82,8 +91,16 @@ export class InvoiceListComponent implements OnInit {
   }
 
   deleteInvoice(invoiceId: string) {
-    this.invoiceService.deleteInvoice(invoiceId).subscribe(() => {
-      this.getInvoices();
+    this.invoiceService.deleteInvoice(invoiceId).subscribe({
+      next: () => {
+        this.getInvoices();
+      },
+      error: () => {
+        this.snackBar.openFromComponent(DeleteErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 
@@ -320,7 +337,9 @@ export class InvoiceListComponent implements OnInit {
         : '',
       company.email ? 'email: ' + company.email : '',
       company.phone ? 'phone: ' + company.phone : '',
-    ].filter(element => !!element).join(' - ');
+    ]
+      .filter((element) => !!element)
+      .join(' - ');
 
     doc.setFontSize(10);
     doc.text(companyAdditionalInfo, 105, 283, { align: 'center' });

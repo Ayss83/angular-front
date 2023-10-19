@@ -11,6 +11,7 @@ import { HomeCommunicatorService } from '../services/home-communicator.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TokenService } from '../services/token.service';
+import { appColors } from '../constants';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   title = '';
   subscription: Subscription | undefined;
   menuColor = 'transparent';
+  appColors = appColors
 
   constructor(
     private router: Router,
@@ -48,19 +50,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   /**
    * Sets title and color of header according to current route
    */
-  private setHeader() {
+  setHeader() {
     if (this.router.url.includes('invoices')) {
       this.title = 'Invoices';
-      this.menuColor = 'rgb(255, 255, 204)';
+      this.menuColor = appColors.yellow;
     } else if (this.router.url.includes('customers')) {
       this.title = 'Customers';
-      this.menuColor = 'rgb(255, 227, 135)';
+      this.menuColor = appColors.orange;
     } else if (this.router.url.includes('products')) {
       this.title = 'Products';
-      this.menuColor = 'rgb(247, 145, 145)';
+      this.menuColor = appColors.red;
     } else if (this.router.url.includes('company')) {
       this.title = 'Company';
-      this.menuColor = 'rgb(230, 230, 230)';
+      this.menuColor = appColors.gray;
     }
   }
 
