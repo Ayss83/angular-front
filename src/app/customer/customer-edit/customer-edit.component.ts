@@ -64,6 +64,10 @@ export class CustomerEditComponent implements OnInit {
     }
   }
 
+  /**
+   * Requests customer save and navigates to customer list view.
+   * Displays message on error
+   */
   save() {
     this.saving$.next(true);
     this.customerService.save(this.customer).subscribe({

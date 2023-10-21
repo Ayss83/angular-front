@@ -46,7 +46,7 @@ export class ProductEditComponent implements OnInit {
    * Checks for a product received via navigation data. Assign it to product property if
    * present (product edition)
    */
-  private initProduct() {
+  initProduct() {
     const receivedProduct = (this.location.getState() as { product: Product })
       ?.product;
     if (!!receivedProduct) {
@@ -54,6 +54,10 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
+  /**
+   * Requests product saving and navigates to product list view.
+   * Displays message on failure
+   */
   save() {
     this.saving$.next(true);
     this.productService.saveProduct(this.product).subscribe({

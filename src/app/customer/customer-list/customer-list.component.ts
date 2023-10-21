@@ -48,6 +48,10 @@ export class CustomerListComponent {
     this.getCustomers();
   }
 
+  /**
+   * Requests customer list and updates the dataSource with result
+   * Displays message on failure
+   */
   getCustomers() {
     this.customerService.getUserCustomers().subscribe({
       next: (customers) => {
@@ -62,6 +66,11 @@ export class CustomerListComponent {
     });
   }
 
+  /**
+   * Navigates to editionpage, passing the customer as data
+   * 
+   * @param customer customer to edit
+   */
   editCustomer(customer: Customer) {
     this.router.navigate(['edit'], {
       relativeTo: this.route,
@@ -69,6 +78,10 @@ export class CustomerListComponent {
     });
   }
 
+  /**
+   * Requests customer deletion and triggers update of customer list
+   * @param customerId id of customer to delete
+   */
   deleteCustomer(customerId: string) {
     this.customerService.deleteCustomer(customerId).subscribe({
       next: () => {

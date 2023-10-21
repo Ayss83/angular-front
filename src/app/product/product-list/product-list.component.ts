@@ -7,6 +7,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/models/product.models';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { RetrieveErrorSnackbarComponent } from 'src/app/shared/retrieve-error-snackbar/retrieve-error-snackbar.component';
+import { DeleteErrorSnackbarComponent } from 'src/app/shared/delete-error-snackbar/delete-error-snackbar.component';
 
 @Component({
   selector: 'app-product-list',
@@ -17,7 +20,8 @@ import { Product } from 'src/app/models/product.models';
     MatButtonModule,
     RouterModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule,
   ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
@@ -29,7 +33,8 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -37,11 +42,20 @@ export class ProductListComponent implements OnInit {
   }
 
   /**
-   * Requests product list and update the dataSource with result
+   * Requests product list and updates the dataSource with result
+   * Displays message on failure
    */
   getProducts() {
-    this.productService.getUserProducts().subscribe(products => {
-      this.productList.data = products;
+    this.productService.getUserProducts().subscribe({
+      next: (products) => {
+        this.productList.data = products;
+      },
+      error: () => {
+        this.snackBar.openFromComponent(RetrieveErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 
@@ -63,8 +77,16 @@ export class ProductListComponent implements OnInit {
    * @param productId id of product to delete
    */
   deleteProduct(productId: string) {
-    this.productService.deleteProduct(productId).subscribe(() => {
-      this.getProducts();
+    this.productService.deleteProduct(productId).subscribe({
+      next: () => {
+        this.getProducts();
+      },
+      error: () => {
+        this.snackBar.openFromComponent(DeleteErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 }

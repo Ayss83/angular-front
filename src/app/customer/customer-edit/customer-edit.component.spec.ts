@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  flush,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CustomerEditComponent } from './customer-edit.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -49,41 +44,38 @@ describe('CustomerEditComponent', () => {
   });
 
   describe('save', () => {
-    it('should emit with saving$ subject', fakeAsync(() => {
+    it('should emit with saving$ subject', () => {
       const spy = spyOn(component.saving$, 'next');
       spyOn(component['customerService'], 'save').and.returnValue(of({}));
 
       component.save();
-      flush();
 
       expect(spy).toHaveBeenCalledTimes(2);
-    }));
+    });
 
-    it('should navigate to parent route', fakeAsync(() => {
+    it('should navigate to parent route', () => {
       const spy = spyOn(component['router'], 'navigate');
       spyOn(component['customerService'], 'save').and.returnValue(of({}));
 
       component.save();
-      flush();
 
       expect(spy).toHaveBeenCalledWith(['../'], {
         relativeTo: component['route'],
       });
-    }));
+    });
 
-    it('should display snackBar message', fakeAsync(() => {
+    it('should display snackBar message', () => {
       const spy = spyOn(component['snackBar'], 'openFromComponent');
       spyOn(component['customerService'], 'save').and.returnValue(
         throwError(() => new Error('test'))
       );
 
       component.save();
-      flush();
 
       expect(spy).toHaveBeenCalledWith(SaveErrorSnackbarComponent, {
         horizontalPosition: 'end',
         duration: 4000,
       });
-    }));
+    });
   });
 });

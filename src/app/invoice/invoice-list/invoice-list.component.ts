@@ -62,6 +62,10 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
   }
 
+  /**
+   * Requests list of invoices for logged user and updates table datasource with result.
+   * Displays error message on failure
+   */
   getInvoices() {
     this.invoiceService.getUserInvoices().subscribe({
       next: (invoices) => {
@@ -76,6 +80,12 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
+  /**
+   * Computes total price of products passed as parameter
+   * 
+   * @param products list of invoice products
+   * @returns total price for invoice products
+   */
   computeTotal(products: QuantityProduct[]) {
     return products.reduce(
       (acc, element) => acc + element.quantity * (element.product.price || 0),
@@ -83,6 +93,11 @@ export class InvoiceListComponent implements OnInit {
     );
   }
 
+  /**
+   * Navigates to edition route and passes invoice to edit as state
+   * 
+   * @param invoice invoice to edit
+   */
   editInvoice(invoice: Invoice) {
     this.router.navigate(['edit'], {
       relativeTo: this.route,
@@ -90,6 +105,12 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
+  /**
+   * Requests deletion of invoice with id received as parameter. Renews invoice list if successful and
+   * displays error message on failure
+   * 
+   * @param invoiceId id of invoice to delete
+   */
   deleteInvoice(invoiceId: string) {
     this.invoiceService.deleteInvoice(invoiceId).subscribe({
       next: () => {
@@ -104,6 +125,11 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
+  /**
+   * Builds PDF of invoice and displays it in dialog
+   * 
+   * @param invoice invoice to display
+   */
   displayInvoice(invoice: Invoice) {
     this.companyService
       .getCompany()

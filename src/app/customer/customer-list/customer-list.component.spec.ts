@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  flush,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CustomerListComponent } from './customer-list.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -37,32 +32,30 @@ describe('CustomerListComponent', () => {
   });
 
   describe('getCustomers', () => {
-    it('should assign response to customerList.data', fakeAsync(() => {
+    it('should assign response to customerList.data', () => {
       const mockResult = [{} as Customer, {} as Customer];
       spyOn(component['customerService'], 'getUserCustomers').and.returnValue(
         of(mockResult)
       );
 
       component.getCustomers();
-      flush();
 
       expect(component.customerList.data).toBe(mockResult);
-    }));
+    });
 
-    it('should display snackBar message', fakeAsync(() => {
+    it('should display snackBar message', () => {
       spyOn(component['customerService'], 'getUserCustomers').and.returnValue(
         throwError(() => new Error('test'))
       );
       const spy = spyOn(component['snackBar'], 'openFromComponent');
 
       component.getCustomers();
-      flush();
 
       expect(spy).toHaveBeenCalledWith(RetrieveErrorSnackbarComponent, {
         horizontalPosition: 'end',
         duration: 4000,
       });
-    }));
+    });
   });
 
   describe('editCustomer', () => {
@@ -92,31 +85,29 @@ describe('CustomerListComponent', () => {
       expect(spy).toHaveBeenCalledWith(id);
     });
 
-    it('should renew customers list', fakeAsync(() => {
+    it('should renew customers list', () => {
       spyOn(component['customerService'], 'deleteCustomer').and.returnValue(
         of({})
       );
       const spy = spyOn(component, 'getCustomers');
 
       component.deleteCustomer('test');
-      flush();
 
       expect(spy).toHaveBeenCalledTimes(1);
-    }));
+    });
 
-    it('should display snackBar message on error', fakeAsync(() => {
+    it('should display snackBar message on error', () => {
       spyOn(component['customerService'], 'deleteCustomer').and.returnValue(
         throwError(() => new Error('test'))
       );
       const spy = spyOn(component['snackBar'], 'openFromComponent');
 
       component.deleteCustomer('test');
-      flush();
 
       expect(spy).toHaveBeenCalledWith(DeleteErrorSnackbarComponent, {
         horizontalPosition: 'end',
         duration: 4000,
       });
-    }));
+    });
   });
 });

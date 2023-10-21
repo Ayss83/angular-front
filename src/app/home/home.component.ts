@@ -72,6 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   logout() {
     this.tokenService.removeToken();
+    // navigates back to login page
     this.router.navigate(['/']);
   }
 

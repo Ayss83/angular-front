@@ -13,7 +13,10 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { Invoice } from 'src/app/models/invoice.models';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import {
+  MatExpansionModule,
+  MatExpansionPanel,
+} from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { Product, QuantityProduct } from 'src/app/models/product.models';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -26,6 +29,7 @@ import { Customer } from 'src/app/models/customer.models';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SaveErrorSnackbarComponent } from 'src/app/shared/save-error-snackbar/save-error-snackbar.component';
 import { Subject } from 'rxjs';
+import { RetrieveErrorSnackbarComponent } from 'src/app/shared/retrieve-error-snackbar/retrieve-error-snackbar.component';
 
 const emptyCustomer: Customer = {
   firstName: '',
@@ -114,30 +118,65 @@ export class InvoiceEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initInvoice();
+    this.getListsData();
+  }
+
+  ngAfterViewInit() {
+    // expands customer info panel if customer information is present on init (edition)
+    if (!!this.invoice.customer.lastName) {
+      this.customerInfoPanel.open();
+    }
+  }
+
+  /**
+   * Retrieves invoice passed as navigation state and assigns it to invoice property if present
+   */
+  initInvoice() {
     const receivedInvoice = (this.location.getState() as { invoice: Invoice })
       ?.invoice;
 
     if (!!receivedInvoice) {
       this.invoice = receivedInvoice;
     }
-    this.productService.getUserProducts().subscribe((products) => {
-      this.products = products;
+  }
+
+  /**
+   * Requests products and customers list to populate corresponding dropdown lists
+   */
+  getListsData() {
+    this.productService.getUserProducts().subscribe({
+      next: (products) => {
+        this.products = products;
+      },
+      error: () => {
+        this.snackbar.openFromComponent(RetrieveErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
-    this.customerService.getUserCustomers().subscribe((customers) => {
-      this.customers = customers;
+
+    this.customerService.getUserCustomers().subscribe({
+      next: (customers) => {
+        this.customers = customers;
+      },
+      error: () => {
+        this.snackbar.openFromComponent(RetrieveErrorSnackbarComponent, {
+          horizontalPosition: 'end',
+          duration: 4000,
+        });
+      },
     });
   }
 
-  ngAfterViewInit() {
-    if (!!this.invoice.customer.lastName) {
-      this.customerInfoPanel.open();
-    }
-  }
-
-  addProduct(product?: Product) {
+  /**
+   * Adds a new empty product to invoice. 
+   */
+  addNewProduct() {
     this.invoice.products.push({
       quantity: 0,
-      product: product || {
+      product: {
         name: '',
         reference: '',
         description: '',
@@ -146,6 +185,9 @@ export class InvoiceEditComponent implements OnInit {
     });
   }
 
+  /**
+   * Adds currently selected product to invoice
+   */
   addExistingProduct() {
     this.invoice.products.push({
       quantity: 1,
@@ -155,16 +197,29 @@ export class InvoiceEditComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
+  /**
+   * Opens dialog for product selection
+   */
   selectProduct() {
     this.dialog.open(this.selectProductTemplate, { disableClose: true });
   }
 
+  /**
+   * Removes product received as parameter from invoice
+   * 
+   * @param product product to remove
+   */
   removeProduct(product: QuantityProduct) {
     this.invoice.products = this.invoice.products.filter(
       (element) => element !== product
     );
   }
 
+  /**
+   * Filters the list of products populating the product dropdown selection and returns it
+   * 
+   * @returns list of products not present in invoice
+   */
   filterNotAlreadyAddedProducts() {
     return this.products.filter(
       (aProduct) =>
@@ -174,6 +229,10 @@ export class InvoiceEditComponent implements OnInit {
     );
   }
 
+  /**
+   * Requests saving of invoice and returns to invoice list view.
+   * Displays message on failure
+   */
   save() {
     this.saving$.next(true);
     this.invoiceService.saveInvoice(this.cleanInvoice()).subscribe({
@@ -206,7 +265,11 @@ export class InvoiceEditComponent implements OnInit {
     };
   }
 
+  /**
+   * Resets invoice customer information
+   */
   useNewCustomer() {
+    // deep copy of emptyCustomer
     this.invoice.customer = {
       ...emptyCustomer,
       address: { ...emptyCustomer.address },

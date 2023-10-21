@@ -71,22 +71,23 @@ export class FilterableSearchComponent<T> {
    * concatenation base. Recursively processes nested object properties.
    *
    * @param element object to stringify
-   * @param stringElement starting point for stringified object
    * @returns stringified element
    */
-  stringifyElement(element: any, stringElement = '') {
+  stringifyElement(element: any) {
+    let stringElement = '';
+
     for (const key in element) {
       if (key !== '_id' && key !== 'ownerId') {
         if (typeof (element as any)[key] !== 'object') {
           stringElement += ' ' + (element as any)[key].toString().toLowerCase();
         } else {
           stringElement +=
-            ' ' + this.stringifyElement(element[key], stringElement);
+            ' ' + this.stringifyElement(element[key]);
         }
       }
     }
 
-    return stringElement;
+    return stringElement.trimStart();
   }
 
   /**
