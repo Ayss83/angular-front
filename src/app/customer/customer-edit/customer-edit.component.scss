@@ -13,6 +13,7 @@ form {
   display: flex;
   justify-content: space-between;
   width: 40%;
+  max-width: 40.625rem;
 
   mat-form-field {
     width: 48%;
@@ -22,7 +23,7 @@ form {
 mat-form-field {
   display: block;
   width: 40%;
-
+  max-width: 40.625rem;
 }
 
 .button-container {
@@ -30,5 +31,30 @@ mat-form-field {
 
   a {
     margin-right: 2rem;
+  }
+}
+
+@media (max-width: 1500px) {
+  mat-form-field {
+    width: 80%;
+  }
+
+  .multiple-input-line {
+    width: 80%;
+  }
+}
+
+@media (max-width: 599px) {
+  mat-form-field {
+    width: 98%;
+  }
+
+  .multiple-input-line {
+    flex-direction: column;
+    width: 98%;
+
+    mat-form-field {
+      width: 100%;
+    }
   }
 }

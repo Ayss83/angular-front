@@ -76,7 +76,8 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+// the flower menu relies on hover to be functional, it is deactivated if device doesn't have hover feature
+@media (hover: none) {
   .container {
     flex-direction: column;
     height: 100%;

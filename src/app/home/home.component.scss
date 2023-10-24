@@ -5,7 +5,33 @@
   height: 3.5rem;
   align-items: center;
 
-  .side-container {
+  .left-side-container, .right-side-container {
     width: 16.5625rem;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .menu {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .right-side-container {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: flex;
+      justify-content: end;
+      width: 16.5625rem;
+
+      mat-icon {
+        margin: 0;
+      }
+    }
   }
 }

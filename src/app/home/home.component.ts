@@ -12,12 +12,22 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TokenService } from '../services/token.service';
 import { appColors } from '../constants';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [RouterModule, MatButtonModule, CommonModule],
+  imports: [
+    RouterModule,
+    MatButtonModule,
+    CommonModule,
+    MatIconModule,
+    MatListModule,
+    MatMenuModule
+  ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -25,7 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   title = '';
   subscription: Subscription | undefined;
   menuColor = 'transparent';
-  appColors = appColors
+  appColors = appColors;
 
   constructor(
     private router: Router,

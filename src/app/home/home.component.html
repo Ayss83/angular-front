@@ -1,5 +1,5 @@
 <div class="menu" [ngStyle]="{ background: getLinearGradientColor() }">
-  <div class="side-container">
+  <div class="left-side-container">
     <a
       routerLink="/home"
       mat-button
@@ -8,8 +8,10 @@
       Home
     </a>
   </div>
+
   <h1>{{ title }}</h1>
-  <div class="side-container">
+
+  <div class="right-side-container">
     <a
       routerLink="./company"
       mat-button
@@ -18,6 +20,22 @@
     >
     <button type="button" mat-stroked-button (click)="logout()">Log out</button>
   </div>
+
+  <div class="mobile-menu">
+    <button type="button" mat-stroked-button [matMenuTriggerFor]="menu">
+      <mat-icon fontIcon="settings"></mat-icon>
+    </button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>
+
+<mat-menu #menu="matMenu">
+  <a
+    routerLink="./company"
+    mat-menu-item
+    (click)="title = 'Company'; menuColor = appColors.gray"
+    >Company information</a
+  >
+  <button type="button" mat-menu-item (click)="logout()">Log out</button>
+</mat-menu>

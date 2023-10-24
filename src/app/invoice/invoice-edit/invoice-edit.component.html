@@ -3,12 +3,12 @@
 <h2>Invoice {{ isEdition ? "edition" : "creation" }}</h2>
 
 <form>
-  <mat-form-field appearance="outline" *ngIf="isEdition">
+  <mat-form-field appearance="outline" *ngIf="isEdition" class="reactive-input">
     <mat-label>Invoice number</mat-label>
     <input name="num" type="text" [(ngModel)]="invoice.num" matInput readonly />
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" class="reactive-input">
     <mat-label>Date</mat-label>
     <input
       name="date"
@@ -197,7 +197,7 @@
       Add an existing product
     </button>
 
-    <button type="button" mat-button (click)="addProduct()">
+    <button type="button" mat-button (click)="addNewProduct()">
       Add a new product
     </button>
   </div>
