@@ -82,7 +82,7 @@ export class InvoiceListComponent implements OnInit {
 
   /**
    * Computes total price of products passed as parameter
-   * 
+   *
    * @param products list of invoice products
    * @returns total price for invoice products
    */
@@ -95,7 +95,7 @@ export class InvoiceListComponent implements OnInit {
 
   /**
    * Navigates to edition route and passes invoice to edit as state
-   * 
+   *
    * @param invoice invoice to edit
    */
   editInvoice(invoice: Invoice) {
@@ -108,7 +108,7 @@ export class InvoiceListComponent implements OnInit {
   /**
    * Requests deletion of invoice with id received as parameter. Renews invoice list if successful and
    * displays error message on failure
-   * 
+   *
    * @param invoiceId id of invoice to delete
    */
   deleteInvoice(invoiceId: string) {
@@ -127,7 +127,7 @@ export class InvoiceListComponent implements OnInit {
 
   /**
    * Builds PDF of invoice and displays it in dialog
-   * 
+   *
    * @param invoice invoice to display
    */
   displayInvoice(invoice: Invoice) {
@@ -156,12 +156,24 @@ export class InvoiceListComponent implements OnInit {
             doc.output('datauristring')
           );
 
-          this.dialog.open(this.displayDialog, {
-            width: '1200px',
-            maxWidth: '100vw',
-            height: '800px',
-            maxHeight: '90vh',
-          });
+          const isTouchDevice = window.matchMedia('(hover: none)').matches;
+
+          if (!isTouchDevice) {
+            this.dialog.open(this.displayDialog, {
+              width: '1200px',
+              maxWidth: '100vw',
+              height: '800px',
+              maxHeight: '90vh',
+            });
+          } else {
+            doc.save(
+              [
+                invoice.customer.lastName,
+                invoice.customer.firstName,
+                invoice.date.toString().split('T')[0],
+              ].join('_')
+            );
+          }
         }),
         catchError(() => {
           this.snackBar.openFromComponent(RetrieveErrorSnackbarComponent, {
