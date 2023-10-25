@@ -27,15 +27,24 @@ import { DeleteErrorSnackbarComponent } from 'src/app/shared/delete-error-snackb
   styleUrls: ['./customer-list.component.scss'],
 })
 export class CustomerListComponent {
-  displayedColumns = [
-    'num',
-    'lastName',
-    'firstName',
-    'email',
-    'city',
-    'actions',
-  ];
   customerList = new MatTableDataSource<Customer>([]);
+
+  get displayedColumns() {
+    const columns = [
+      'num',
+      'lastName',
+      'firstName',
+      'email',
+      'city',
+      'actions',
+    ];
+
+    if (window.innerWidth > 599) {
+      return columns;
+    }
+    
+    return [...columns.slice(0, 2), ...columns.slice(-2)];
+  }
 
   constructor(
     private customerService: CustomerService,
@@ -68,7 +77,7 @@ export class CustomerListComponent {
 
   /**
    * Navigates to editionpage, passing the customer as data
-   * 
+   *
    * @param customer customer to edit
    */
   editCustomer(customer: Customer) {

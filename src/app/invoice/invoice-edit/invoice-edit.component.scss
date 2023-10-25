@@ -74,7 +74,7 @@ form {
   width: 500px;
 }
 
-mat-icon[fontIcon='delete'] {
+mat-icon[fontIcon="delete"] {
   color: red;
 }
 
@@ -104,7 +104,7 @@ mat-icon[fontIcon='delete'] {
   }
 
   .product-line {
-    height: 19.5rem;
+    height: 19.6rem;
     flex-wrap: wrap;
     justify-content: center;
 
@@ -127,5 +127,9 @@ mat-icon[fontIcon='delete'] {
 
   .button-container {
     margin-top: 0.5rem;
+  }
+
+  .product-select-card {
+    width: 100vw;
   }
 }

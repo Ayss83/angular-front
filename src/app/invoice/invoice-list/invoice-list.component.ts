@@ -136,6 +136,12 @@ export class InvoiceListComponent implements OnInit {
       .pipe(
         tap((company) => {
           const doc = new jsPDF();
+          const filename = [
+            invoice.customer.lastName,
+            invoice.customer.firstName,
+            invoice.date.toString().split('T')[0],
+          ].join('_');
+
           doc.setFontSize(12);
 
           this.setCompanyInfo(doc, company);
@@ -153,7 +159,9 @@ export class InvoiceListComponent implements OnInit {
           this.setCompanyAdditionalInfo(company, doc);
 
           this.invoicePdf = this.domSanitizer.bypassSecurityTrustResourceUrl(
-            doc.output('datauristring')
+            doc.output('datauristring', {
+              filename,
+            })
           );
 
           const isTouchDevice = window.matchMedia('(hover: none)').matches;
@@ -164,15 +172,10 @@ export class InvoiceListComponent implements OnInit {
               maxWidth: '100vw',
               height: '800px',
               maxHeight: '90vh',
+              panelClass: 'invoice-display-dialog',
             });
           } else {
-            doc.save(
-              [
-                invoice.customer.lastName,
-                invoice.customer.firstName,
-                invoice.date.toString().split('T')[0],
-              ].join('_')
-            );
+            doc.save(filename);
           }
         }),
         catchError(() => {

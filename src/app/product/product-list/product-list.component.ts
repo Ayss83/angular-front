@@ -28,7 +28,16 @@ import { DeleteErrorSnackbarComponent } from 'src/app/shared/delete-error-snackb
 })
 export class ProductListComponent implements OnInit {
   productList = new MatTableDataSource<Product>();
-  displayedColumns = ['reference', 'name', 'description', 'price', 'actions'];
+
+  get displayedColumns() {
+    const columns = ['reference', 'name', 'description', 'price', 'actions'];
+
+    if (window.innerWidth > 599) {
+      return columns;
+    }
+
+    return [...columns.slice(0, 2), ...columns.slice(-2)];
+  }
 
   constructor(
     private productService: ProductService,

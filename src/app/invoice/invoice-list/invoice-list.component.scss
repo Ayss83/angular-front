@@ -2,11 +2,18 @@ mat-icon {
   cursor: pointer;
   margin-right: 5px;
 
-  &[fontIcon='delete'] {
+  &[fontIcon="delete"] {
     color: red;
   }
 }
 
 .new-button {
   margin-left: 20px;
+}
+
+// ng-deep necessary as dialog is opened outside of component
+::ng-deep .invoice-display-dialog {
+  iframe {
+    border: 0;
+  }
 }

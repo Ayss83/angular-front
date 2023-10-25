@@ -171,7 +171,7 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   /**
-   * Adds a new empty product to invoice. 
+   * Adds a new empty product to invoice.
    */
   addNewProduct() {
     this.invoice.products.push({
@@ -201,12 +201,15 @@ export class InvoiceEditComponent implements OnInit {
    * Opens dialog for product selection
    */
   selectProduct() {
-    this.dialog.open(this.selectProductTemplate, { disableClose: true });
+    this.dialog.open(this.selectProductTemplate, {
+      disableClose: true,
+      maxWidth: '100vw',
+    });
   }
 
   /**
    * Removes product received as parameter from invoice
-   * 
+   *
    * @param product product to remove
    */
   removeProduct(product: QuantityProduct) {
@@ -217,7 +220,7 @@ export class InvoiceEditComponent implements OnInit {
 
   /**
    * Filters the list of products populating the product dropdown selection and returns it
-   * 
+   *
    * @returns list of products not present in invoice
    */
   filterNotAlreadyAddedProducts() {
@@ -225,7 +228,12 @@ export class InvoiceEditComponent implements OnInit {
       (aProduct) =>
         !this.invoice.products
           .map((invoiceProduct) => invoiceProduct.product)
-          .find((invoiceProduct) => invoiceProduct === aProduct)
+          .find(
+            (invoiceProduct) =>
+              invoiceProduct === aProduct ||
+              (invoiceProduct.reference &&
+                invoiceProduct.reference === aProduct.reference)
+          )
     );
   }
 

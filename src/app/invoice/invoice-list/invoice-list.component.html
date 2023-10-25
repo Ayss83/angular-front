@@ -31,7 +31,11 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-      <mat-icon (click)="displayInvoice(element)" fontIcon="search" matTooltip="Display invoice"></mat-icon>
+      <mat-icon
+        (click)="displayInvoice(element)"
+        fontIcon="search"
+        matTooltip="Display invoice"
+      ></mat-icon>
       <mat-icon
         (click)="editInvoice(element)"
         fontIcon="edit"
@@ -49,7 +53,7 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
 
-
 <ng-template #displayDialog>
-  <iframe [src]="invoicePdf" width="100%" height="100%"></iframe>
+  <!-- 99.3% height is a workaround, higher value triggers overflow and scroll bar in dialog -->
+  <iframe [src]="invoicePdf" width="100%" height="99.3%" style="margin: 0;"></iframe>
 </ng-template>
