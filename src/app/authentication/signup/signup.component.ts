@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +27,6 @@ import { SignupResponse } from 'src/app/models/auth.models';
     AuthFormComponent,
   ],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent {
   user: User = {
@@ -43,7 +40,6 @@ export class SignupComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
     private snackBar: MatSnackBar
   ) {}
 
@@ -82,7 +78,6 @@ export class SignupComponent {
             }
 
             this.isCreatingAccount = false;
-            this.changeDetectorRef.markForCheck(); // signaling internal change (related to OnPush strategy)
           })
         )
         .subscribe();

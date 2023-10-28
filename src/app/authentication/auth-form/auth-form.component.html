@@ -14,9 +14,9 @@
 
   <div>
     <mat-form-field appearance="outline">
-      <mat-label>Login</mat-label>
+      <mat-label>Login (email)</mat-label>
       <input
-        type="text"
+        type="email"
         [(ngModel)]="user.email"
         (ngModelChange)="formChange.emit(user)"
         name="email"
