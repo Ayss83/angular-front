@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './authentication/login/login.component';
-import { SignupComponent } from './authentication/signup/signup.component';
-import { HomeComponent } from './home/home.component';
 import { loggedGuard } from './guards/logged.guard';
-import { HomeMenuComponent } from './home-menu/home-menu.component';
-import { InvoiceListComponent } from './invoice/invoice-list/invoice-list.component';
-import { InvoiceEditComponent } from './invoice/invoice-edit/invoice-edit.component';
-import { CustomerListComponent } from './customer/customer-list/customer-list.component';
-import { CustomerEditComponent } from './customer/customer-edit/customer-edit.component';
-import { ProductListComponent } from './product/product-list/product-list.component';
-import { ProductEditComponent } from './product/product-edit/product-edit.component';
-import { CompanyComponent } from './company/company.component';
+import { LoginComponent } from './components/authentication/login/login.component';
+import { SignupComponent } from './components/authentication/signup/signup.component';
+import { CompanyComponent } from './components/company/company.component';
+import { CustomerEditComponent } from './components/customer/customer-edit/customer-edit.component';
+import { CustomerListComponent } from './components/customer/customer-list/customer-list.component';
+import { HomeMenuComponent } from './components/home/home-menu/home-menu.component';
+import { HomeComponent } from './components/home/home.component';
+import { InvoiceEditComponent } from './components/invoice/invoice-edit/invoice-edit.component';
+import { InvoiceListComponent } from './components/invoice/invoice-list/invoice-list.component';
+import { ProductEditComponent } from './components/product/product-edit/product-edit.component';
+import { ProductListComponent } from './components/product/product-list/product-list.component';
+
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
