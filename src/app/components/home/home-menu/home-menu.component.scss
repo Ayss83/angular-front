@@ -76,6 +76,12 @@
   }
 }
 
+@media (max-width: 699px) {
+  .container {
+    margin-top: 3rem;
+  }
+}
+
 // the flower menu relies on hover to be functional, it is deactivated if device doesn't have hover feature
 @media (hover: none) {
   .container {
@@ -84,7 +90,7 @@
 
     .petal {
       width: 100%;
-      height: 15%;
+      height: 15vh;
       border-radius: 0;
       cursor: pointer;
       display: inline-flex;
