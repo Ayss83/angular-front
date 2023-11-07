@@ -44,8 +44,8 @@ describe('CustomerEditComponent', () => {
   });
 
   describe('save', () => {
-    it('should emit with saving$ subject', () => {
-      const spy = spyOn(component.saving$, 'next');
+    it('should emit with isSaving$ subject', () => {
+      const spy = spyOn(component.isSaving$, 'next');
       spyOn(component['customerService'], 'save').and.returnValue(of({}));
 
       component.save();

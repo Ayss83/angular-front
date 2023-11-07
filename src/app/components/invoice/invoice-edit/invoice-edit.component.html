@@ -217,7 +217,7 @@
     color="primary"
     type="button"
     (click)="save()"
-    [disabled]="!isValidInvoice || (saving$ | async)"
+    [disabled]="!isValidInvoice || (isSaving$ | async)"
   >
     Save
   </button>

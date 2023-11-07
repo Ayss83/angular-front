@@ -40,7 +40,7 @@ export class CustomerEditComponent implements OnInit {
       city: '',
     },
   };
-  saving$ = new Subject<boolean>();
+  isSaving$ = new Subject<boolean>();
 
   get isEdition() {
     return !!(this.location.getState() as { customer: Customer })?.customer;
@@ -69,18 +69,18 @@ export class CustomerEditComponent implements OnInit {
    * Displays message on error
    */
   save() {
-    this.saving$.next(true);
+    this.isSaving$.next(true);
     this.customerService.save(this.customer).subscribe({
       next: () => {
         this.router.navigate(['../'], { relativeTo: this.route });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
       error: () => {
         this.snackBar.openFromComponent(SaveErrorSnackbarComponent, {
           horizontalPosition: 'end',
           duration: 4000,
         });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
     });
   }

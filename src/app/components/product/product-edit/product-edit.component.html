@@ -65,7 +65,7 @@
       color="primary"
       type="button"
       (click)="save()"
-      [disabled]="name.invalid || price.invalid || (saving$ | async)"
+      [disabled]="name.invalid || price.invalid || (isSaving$ | async)"
     >
       Save
     </button>

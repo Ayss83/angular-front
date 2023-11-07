@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,12 +34,11 @@ export class CompanyComponent implements AfterViewInit {
     zipCode: '',
     city: '',
   };
-  saving$ = new Subject<boolean>();
+  isSaving$ = new Subject<boolean>();
 
   constructor(
     private companyService: CompanyService,
     private snackBar: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
@@ -47,14 +46,13 @@ export class CompanyComponent implements AfterViewInit {
       next: (company) => {
         if (company) {
           this.company = company;
-          this.changeDetectorRef.markForCheck();
         }
       },
     });
   }
 
   save() {
-    this.saving$.next(true);
+    this.isSaving$.next(true);
     this.companyService.save(this.company).subscribe({
       next: (newCompany) => {
         this.company = newCompany;
@@ -62,14 +60,14 @@ export class CompanyComponent implements AfterViewInit {
           horizontalPosition: 'end',
           duration: 4000
         })
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
       error: () => {
         this.snackBar.openFromComponent(SaveErrorSnackbarComponent, {
           horizontalPosition: 'end',
           duration: 4000,
         });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
     });
   }

@@ -28,7 +28,7 @@ import { SaveErrorSnackbarComponent } from '../../shared/save-error-snackbar/sav
 })
 export class ProductEditComponent implements OnInit {
   product: Product = { reference: '', name: '', description: '', price: null };
-  saving$ = new Subject<boolean>();
+  isSaving$ = new Subject<boolean>();
 
   constructor(
     private productService: ProductService,
@@ -59,18 +59,18 @@ export class ProductEditComponent implements OnInit {
    * Displays message on failure
    */
   save() {
-    this.saving$.next(true);
+    this.isSaving$.next(true);
     this.productService.saveProduct(this.product).subscribe({
       next: () => {
         this.router.navigate(['../'], { relativeTo: this.route });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
       error: () => {
         this.snackBar.openFromComponent(SaveErrorSnackbarComponent, {
           horizontalPosition: 'end',
           duration: 4000,
         });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
     });
   }

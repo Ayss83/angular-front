@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { OnDestroy, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
@@ -26,10 +21,9 @@ import { TokenService } from 'src/app/services/token.service';
     CommonModule,
     MatIconModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit, OnDestroy {
   title = '';
@@ -40,7 +34,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private communicationService: HomeCommunicatorService,
-    private changeDetectorRef: ChangeDetectorRef,
     private tokenService: TokenService
   ) {}
 
@@ -49,7 +42,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       (sectionInfo) => {
         this.menuColor = sectionInfo.color;
         this.title = sectionInfo.name;
-        this.changeDetectorRef.markForCheck();
       }
     );
 
@@ -77,6 +69,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // unsubscribe to avoid a memory leak
     this.subscription?.unsubscribe();
   }
 

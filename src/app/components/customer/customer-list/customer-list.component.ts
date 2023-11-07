@@ -39,10 +39,12 @@ export class CustomerListComponent {
       'actions',
     ];
 
+    // returns full list for wide enough screens
     if (window.innerWidth > 599) {
       return columns;
     }
     
+    // returns a slice of colums for smaller screens
     return [...columns.slice(0, 2), ...columns.slice(-2)];
   }
 

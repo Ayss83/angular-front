@@ -77,7 +77,7 @@ export class InvoiceEditComponent implements OnInit {
 
   productToAdd: Product | null = null;
 
-  saving$ = new Subject<boolean>();
+  isSaving$ = new Subject<boolean>();
 
   get isEdition() {
     return !!(this.location.getState() as { invoice: Invoice })?.invoice?.num;
@@ -242,18 +242,18 @@ export class InvoiceEditComponent implements OnInit {
    * Displays message on failure
    */
   save() {
-    this.saving$.next(true);
+    this.isSaving$.next(true);
     this.invoiceService.saveInvoice(this.cleanInvoice()).subscribe({
       next: () => {
         this.router.navigate(['../'], { relativeTo: this.route });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
       error: () => {
         this.snackbar.openFromComponent(SaveErrorSnackbarComponent, {
           horizontalPosition: 'end',
           duration: 4000,
         });
-        this.saving$.next(false);
+        this.isSaving$.next(false);
       },
     });
   }
