@@ -6,18 +6,36 @@ import { Injectable } from '@angular/core';
 export class TokenService {
   private readonly tokenKey = 'token';
 
+  /**
+   * Returns authentication token from localstorage
+   * 
+   * @returns current JSON web token
+   */
   getToken() {
     return localStorage.getItem(this.tokenKey);
   }
 
+  /**
+   * Saves authentication token in localstorage
+   * 
+   * @param token JSON web token to save
+   */
   setToken(token: string) {
     localStorage.setItem(this.tokenKey, token);
   }
 
+  /**
+   * Deletes authentication token from localstorage
+   */
   removeToken() {
     localStorage.removeItem(this.tokenKey);
   }
 
+  /**
+   * Checks if the authentication token needs to be renewed
+   * 
+   * @returns boolean indicating if renewal is needed
+   */
   isTokenRenewalNeeded() {
     const token = this.getToken();
     if (!token) {

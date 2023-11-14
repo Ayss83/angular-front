@@ -43,7 +43,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   /**
-   * Checks for a product received via navigation data. Assign it to product property if
+   * Checks for a product received via navigation data. Assigns it to product property if
    * present (product edition)
    */
   initProduct() {

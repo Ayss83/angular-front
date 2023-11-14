@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,7 +34,6 @@ import { RetrieveErrorSnackbarComponent } from '../../shared/retrieve-error-snac
   ],
   templateUrl: './invoice-list.component.html',
   styleUrls: ['./invoice-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvoiceListComponent implements OnInit {
   @ViewChild('displayDialog') displayDialog!: TemplateRef<any>;

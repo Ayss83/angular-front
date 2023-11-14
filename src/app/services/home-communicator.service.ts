@@ -13,6 +13,12 @@ export class HomeCommunicatorService {
 
   changeSection$ = this.changeSection.asObservable();
 
+  /**
+   * Emits the information about selected section of application for listening
+   * components to be updated
+   * 
+   * @param sectionInfo newly selected section of application
+   */
   onSectionChange(sectionInfo: SectionInfo) {
     this.changeSection.next(sectionInfo);
   }
